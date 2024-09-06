@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management System</title>
+</head>
+<body>
+    <h1>Task Management System</h1>
+
+    <!-- Task Form -->
+    <form action="/add" method="POST">
+        <input type="text" name="title" placeholder="Task Title" required>
+        <input type="text" name="description" placeholder="Task Description" required>
+        <input type="date" name="due_date" required>
+        <select name="priority">
+            <option value="Low">Low</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="High">High</option>
+        </select>
+        <button type="submit">Add Task</button>
+    </form>
+
+    <!-- Task List -->
+    <h2>Tasks</h2>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                {{ task.title }} - {{ task.description }} - Due: {{ task.due_date }} - Priority: {{ task.priority }} -
+                Status: {{ "Completed" if task.completed else "Not Completed" }}
+                <a href="/complete/{{ loop.index0 }}">Complete</a> |
+                <a href="/delete/{{ loop.index0 }}">Delete</a>
+            </li>
+        {% else %}
+            <li>No tasks available.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

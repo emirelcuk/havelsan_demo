@@ -1,8 +1,8 @@
 import datetime
 
-# Görev sınıfı
+# Task class
 class Task:
-    def __init__(self, title, description, due_date, priority='Orta'):
+    def __init__(self, title, description, due_date, priority='Medium'):
         self.title = title
         self.description = description
         self.due_date = due_date
@@ -23,121 +23,139 @@ class Task:
             self.priority = priority
 
     def __str__(self):
-        status = "Tamamlandı" if self.completed else "Tamamlanmadı"
-        return f"{self.title} | {status} | Öncelik: {self.priority} | Son Tarih: {self.due_date} \nAçıklama: {self.description}"
+        status = "Completed" if self.completed else "Not Completed"
+        return (f"{self.title} | {status} | Priority: {self.priority} | "
+                f"Due Date: {self.due_date} \nDescription: {self.description}")
 
-
-# Görev yöneticisi sınıfı
+# Task manager class
 class TaskManager:
     def __init__(self):
         self.tasks = []
 
-    def add_task(self, title, description, due_date, priority='Orta'):
+    def add_task(self, title, description, due_date, priority='Medium'):
         task = Task(title, description, due_date, priority)
         self.tasks.append(task)
         self.sort_tasks()
-        print(f"Görev '{title}' eklendi.")
+        print(f"Task '{title}' has been added.")
 
     def list_tasks(self):
         if not self.tasks:
-            print("Görev bulunmamaktadır.")
+            print("No tasks available.")
             return
 
         for index, task in enumerate(self.tasks):
             print(f"{index + 1}. {task}")
 
     def complete_task(self, index):
-        try:
+        if self._is_valid_index(index):
             self.tasks[index].complete()
-            print(f"Görev '{self.tasks[index].title}' tamamlandı.")
-        except IndexError:
-            print("Geçersiz görev numarası.")
+            print(f"Task '{self.tasks[index].title}' has been completed.")
+        else:
+            print("Invalid task number.")
 
     def update_task(self, index, title=None, description=None, due_date=None, priority=None):
-        try:
+        if self._is_valid_index(index):
             self.tasks[index].update(title, description, due_date, priority)
             self.sort_tasks()
-            print(f"Görev '{self.tasks[index].title}' güncellendi.")
-        except IndexError:
-            print("Geçersiz görev numarası.")
+            print(f"Task '{self.tasks[index].title}' has been updated.")
+        else:
+            print("Invalid task number.")
 
     def delete_task(self, index):
-        try:
+        if self._is_valid_index(index):
             task = self.tasks.pop(index)
-            print(f"Görev '{task.title}' silindi.")
-        except IndexError:
-            print("Geçersiz görev numarası.")
+            print(f"Task '{task.title}' has been deleted.")
+        else:
+            print("Invalid task number.")
 
     def sort_tasks(self):
-        # Görevleri önceliğe göre sıralar: Yüksek > Orta > Düşük
-        priority_order = {'Yüksek': 0, 'Orta': 1, 'Düşük': 2}
-        self.tasks.sort(key=lambda task: priority_order.get(task.priority, 1))
+        # Sort tasks by completion status, priority, and due date
+        priority_order = {'High': 0, 'Medium': 1, 'Low': 2}
+        self.tasks.sort(
+            key=lambda task: (task.completed, priority_order.get(task.priority, 1), task.due_date))
 
-# Kullanıcı arayüzü
+    def _is_valid_index(self, index):
+        # Check if the index is valid
+        return 0 <= index < len(self.tasks)
+
+# Input validation functions
+def get_valid_int(prompt, min_val=1, max_val=None):
+    while True:
+        try:
+            value = int(input(prompt))
+            if (min_val is not None and value < min_val) or (max_val is not None and value > max_val):
+                raise ValueError
+            return value - 1  # Subtract 1 because user sees list starting from 1
+        except ValueError:
+            print(f"Please enter a number between {min_val} and {max_val}.")
+
+def get_valid_date(prompt):
+    while True:
+        try:
+            date_str = input(prompt)
+            return datetime.datetime.strptime(date_str, "%Y-%m-%d").date()
+        except ValueError:
+            print("Invalid date format. Please use YYYY-MM-DD.")
+
+def get_valid_priority():
+    priorities = ['Low', 'Medium', 'High']
+    priority = input("Priority (Low, Medium, High): ").capitalize()
+    if priority not in priorities:
+        print("Invalid priority. Defaulting to 'Medium'.")
+        return 'Medium'
+    return priority
+
+# User interface
 def main():
     manager = TaskManager()
 
     while True:
-        print("\nGörev Takip Sistemi")
-        print("1. Görev Ekle")
-        print("2. Görevleri Listele")
-        print("3. Görev Tamamla")
-        print("4. Görev Güncelle")
-        print("5. Görev Sil")
-        print("6. Çıkış")
-        choice = input("Bir seçenek seçin (1-6): ")
+        print("\nTask Management System")
+        print("1. Add Task")
+        print("2. List Tasks")
+        print("3. Complete Task")
+        print("4. Update Task")
+        print("5. Delete Task")
+        print("6. Exit")
+        choice = input("Select an option (1-6): ")
 
         if choice == '1':
-            title = input("Görev Başlığı: ")
-            description = input("Görev Açıklaması: ")
-            due_date = input("Son Tarih (YYYY-MM-DD): ")
-            priority = input("Öncelik (Düşük, Orta, Yüksek): ").capitalize()
-            if priority not in ['Düşük', 'Orta', 'Yüksek']:
-                print("Geçersiz öncelik. Varsayılan olarak 'Orta' seçildi.")
-                priority = 'Orta'
-
-            try:
-                due_date = datetime.datetime.strptime(due_date, "%Y-%m-%d").date()
-                manager.add_task(title, description, due_date, priority)
-            except ValueError:
-                print("Geçersiz tarih formatı. Lütfen YYYY-MM-DD formatında girin.")
+            title = input("Task Title: ")
+            description = input("Task Description: ")
+            due_date = get_valid_date("Due Date (YYYY-MM-DD): ")
+            priority = get_valid_priority()
+            manager.add_task(title, description, due_date, priority)
 
         elif choice == '2':
             manager.list_tasks()
 
         elif choice == '3':
             manager.list_tasks()
-            index = int(input("Tamamlanacak görevin numarasını girin: ")) - 1
+            index = get_valid_int("Enter the number of the task to complete: ", 1, len(manager.tasks))
             manager.complete_task(index)
 
         elif choice == '4':
             manager.list_tasks()
-            index = int(input("Güncellenecek görevin numarasını girin: ")) - 1
-            title = input("Yeni Görev Başlığı (boş bırakabilirsiniz): ")
-            description = input("Yeni Görev Açıklaması (boş bırakabilirsiniz): ")
-            due_date = input("Yeni Son Tarih (YYYY-MM-DD) (boş bırakabilirsiniz): ")
-            priority = input("Yeni Öncelik (Düşük, Orta, Yüksek) (boş bırakabilirsiniz): ").capitalize()
-            if due_date:
-                try:
-                    due_date = datetime.datetime.strptime(due_date, "%Y-%m-%d").date()
-                except ValueError:
-                    print("Geçersiz tarih formatı. Varsayılan olarak mevcut tarih korunacak.")
-                    due_date = None
-
+            index = get_valid_int("Enter the number of the task to update: ", 1, len(manager.tasks))
+            title = input("New Task Title (leave blank to keep current): ")
+            description = input("New Task Description (leave blank to keep current): ")
+            due_date = input("New Due Date (YYYY-MM-DD) (leave blank to keep current): ")
+            priority = get_valid_priority() if input("Change priority? (Y/N): ").lower() == 'y' else None
+            due_date = datetime.datetime.strptime(due_date, "%Y-%m-%d").date() if due_date else None
             manager.update_task(index, title=title, description=description, due_date=due_date, priority=priority)
 
         elif choice == '5':
             manager.list_tasks()
-            index = int(input("Silinecek görevin numarasını girin: ")) - 1
+            index = get_valid_int("Enter the number of the task to delete: ", 1, len(manager.tasks))
             manager.delete_task(index)
 
         elif choice == '6':
-            print("Çıkılıyor...")
+            print("Exiting...")
             break
 
         else:
-            print("Geçersiz seçenek. Lütfen tekrar deneyin.")
+            print("Invalid choice. Please try again.")
 
-# Ana programı çalıştır
+# Run the main program
 if __name__ == "__main__":
     main()
