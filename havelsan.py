@@ -39,13 +39,6 @@ class TaskManager:
         self.tasks.append(task)
         self.sort_tasks()
 
-    def list_tasks(self):
-        return self.tasks
-
-    def complete_task(self, index):
-        if self._is_valid_index(index):
-            self.tasks[index].complete()
-
     def update_task(self, index, title=None, description=None, due_date=None, priority=None):
         if self._is_valid_index(index):
             self.tasks[index].update(title, description, due_date, priority)

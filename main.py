@@ -70,15 +70,7 @@ class TaskManager:
         return 0 <= index < len(self.tasks)
 
 # Input validation functions
-def get_valid_int(prompt, min_val=1, max_val=None):
-    while True:
-        try:
-            value = int(input(prompt))
-            if (min_val is not None and value < min_val) or (max_val is not None and value > max_val):
-                raise ValueError
-            return value - 1  # Subtract 1 because user sees list starting from 1
-        except ValueError:
-            print(f"Please enter a number between {min_val} and {max_val}.")
+
 
 def get_valid_date(prompt):
     while True:
