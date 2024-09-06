@@ -41,8 +41,7 @@ class TaskManager:
 
     def list_tasks(self):
         return self.tasks
-    def  my_new_func(self):
-        return self
+
     def complete_task(self, index):
         if self._is_valid_index(index):
             self.tasks[index].complete()

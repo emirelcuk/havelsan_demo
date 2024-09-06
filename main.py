@@ -108,8 +108,7 @@ def main():
         print("4. Update Task")
         print("5. Delete Task")
         print("6. Exit")
-        print("7. New attribute")
-        print("8. New attribute")
+
         choice = input("Select an option (1-6): ")
 
         if choice == '1':
@@ -145,8 +144,7 @@ def main():
         elif choice == '6':
             print("Exiting...")
             break
-        elif choice == '7':
-            print("7. Attribute")
+
         else:
             print("Invalid choice. Please try again.")
 
