@@ -12,15 +12,6 @@ class Task:
     def complete(self):
         self.completed = True
 
-    def update(self, title=None, description=None, due_date=None, priority=None):
-        if title:
-            self.title = title
-        if description:
-            self.description = description
-        if due_date:
-            self.due_date = due_date
-        if priority:
-            self.priority = priority
 
     def __str__(self):
         status = "Completed" if self.completed else "Not Completed"
