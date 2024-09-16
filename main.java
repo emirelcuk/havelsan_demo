@@ -31,8 +31,7 @@ public class SimpleCalculator {
         System.out.println("1. Toplama");
         System.out.println("2. Çıkarma");
         System.out.println("3. Çarpma");
-        System.out.println("4. Bölme");
-        System.out.println("5. Çıkış");
+
         System.out.println("Bir işlem seçiniz: ");
     }
 
