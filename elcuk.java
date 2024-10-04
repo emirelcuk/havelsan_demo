@@ -1,84 +1,374 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Scanner;
 
-public class BuggyJavaApp {
+public class SimpleCalculator {
+
+    // Toplama işlemi
+    public static double add(double a, double b) {
+        return a + b;
+    }
+
+    // Çıkarma işlemi
+    public static double subtract(double a, double b) {
+        return a - b;
+    }
+
+    // Çarpma işlemi
+    public static double multiply(double a, double b) {
+        return a * b;
+    }
+
+    // Bölme işlemi
+    public static double divide(double a, double b) {
+        if (b == 0) {
+            System.out.println("Bölme işlemi yapılamaz! Bölen sıfır olamaz.");
+            return 0;
+        }
+        return a / b;
+    }
+
+    public static void printMenu() {
+        System.out.println("Basit Hesap Makinesi");
+        System.out.println("1. Toplama");
+        System.out.println("2. Çıkarma");
+        System.out.println("3. Çarpma");
+
+        System.out.println("Bir işlem seçiniz: ");
+    }
 
     public static void main(String[] args) {
-        // Declaring a list of integers
-        List<Integer> numbers = new ArrayList<>();
-        numbers.add(1); // Adding an integer
-        numbers.add("two"); // ERROR: Adding a string to an integer list
+        Scanner scanner = new Scanner(System.in);
+        boolean exit = false;
 
-        // Trying to print the list - syntax error
-        System.out.println("Numbers in the list are " numbers); // Missing + operator
+        while (!exit) {
+            printMenu();
+            int choice = scanner.nextInt();
+            
+            if (choice == 5) {
+                exit = true;
+                System.out.println("Program sonlandırılıyor.");
+                continue;
+            }
+            
+            System.out.println("Birinci sayıyı girin: ");
+            double num1 = scanner.nextDouble();
+            System.out.println("İkinci sayıyı girin: ");
+            double num2 = scanner.nextDouble();
 
-        // Declaring an array with incorrect size
-        int[] array = new int[-5]; // ERROR: Negative array size
+            switch (choice) {
+                case 1:
+                    System.out.println("Sonuç: " + add(num1, num2));
+                    break;
+                case 2:
+                    System.out.println("Sonuç: " + subtract(num1, num2));
+                    break;
+                case 3:
+                    System.out.println("Sonuç: " + multiply(num1, num2));
+                    break;
+                case 4:
+                    System.out.println("Sonuç: " + divide(num1, num2));
+                    break;
+                default:
+                    System.out.println("Geçersiz seçim.");
+                    break;
+            }
 
-        // Loop through the array (incorrect condition, infinite loop)
-        for (int i = 0; i <= array.length; i--) {  // ERROR: Wrong loop condition
-            System.out.println("Array element at index " + i + " is " + array[i]); // ArrayIndexOutOfBoundsException
+            System.out.println();
         }
+        
+        scanner.close();
+    }
+}
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
-        // Declaring an uninitialized variable
-        String text;
-        System.out.println(text); // ERROR: Variable 'text' might not have been initialized
+// Kitap sınıfı
+class Book {
+    private String title;
+    private String author;
+    private String isbn;
 
-        // Invalid arithmetic operation
-        int result = 10 / 0; // ERROR: Division by zero
-
-        // Trying to parse a string into an integer
-        String numStr = "abc";
-        int number = Integer.parseInt(numStr); // ERROR: NumberFormatException
-
-        // Null pointer exception scenario
-        String name = null;
-        if (name.equals("John")) {  // ERROR: NullPointerException when calling equals on null
-            System.out.println("Name is John");
-        }
-
-        // Invalid method declaration inside a method
-        public void invalidMethod() {  // ERROR: Methods cannot be declared inside other methods
-            System.out.println("This is invalid!");
-        }
-
-        // Recursive method call without termination
-        recursiveMethod();  // ERROR: StackOverflowError due to infinite recursion
-
-        // Invalid casting between unrelated types
-        Object obj = new Integer(10);
-        String str = (String) obj;  // ERROR: ClassCastException
-
-        // Incorrect file operations (file not found)
-        File file = new File("nonexistent.txt");  // ERROR: FileNotFoundException
-        Scanner sc = new Scanner(file);
-        while (sc.hasNext()) {
-            System.out.println(sc.nextLine());
-        }
-
-        // Accessing static method using an instance (not the class)
-        BuggyJavaApp buggyApp = new BuggyJavaApp();
-        buggyApp.staticMethod(); // ERROR: Static method should be called on the class, not instance
-
-        // Missing return statement in a method that should return a value
-        public int addition(int a, int b) {  // ERROR: Missing return statement
-            a + b; // Missing return
-        }
-
-        // Using an undeclared variable
-        System.out.println(undeclaredVariable);  // ERROR: Variable 'undeclaredVariable' has not been declared
-
-        // Trying to access a method that doesn't exist
-        buggyApp.nonExistentMethod();  // ERROR: Method does not exist
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
     }
 
-    // Recursive method without base case
-    public static void recursiveMethod() {
-        recursiveMethod();  // Infinite recursion
+    public String getTitle() {
+        return title;
     }
 
-    // Static method example (should not be called via instance)
-    public static void staticMethod() {
-        System.out.println("Static method called.");
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    @Override
+    public String toString() {
+        return "Başlık: " + title + ", Yazar: " + author + ", ISBN: " + isbn;
+    }
+}
+
+// Kütüphane sınıfı
+class Library {
+    private List<Book> books;
+
+    public Library() {
+        books = new ArrayList<>();
+    }
+
+    public void addBook(Book book) {
+        books.add(book);
+    }
+
+    public void removeBook(String isbn) {
+        books.removeIf(book -> book.getIsbn().equals(isbn));
+    }
+
+    public Book findBookByTitle(String title) {
+        for (Book book : books) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
+                return book;
+            }
+        }
+        return null;
+    }
+
+    public Book findBookByIsbn(String isbn) {
+        for (Book book : books) {
+            if (book.getIsbn().equals(isbn)) {
+                return book;
+            }
+        }
+        return null;
+    }
+
+    public void listBooks() {
+        if (books.isEmpty()) {
+            System.out.println("Kütüphanede hiç kitap yok.");
+            return;
+        }
+        for (Book book : books) {
+            System.out.println(book);
+        }
+    }
+}
+
+// Kütüphane yöneticisi sınıfı
+public class LibraryManager {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Library library = new Library();
+        boolean running = true;
+
+        while (running) {
+            System.out.println("\nKütüphane Yönetim Sistemi");
+            System.out.println("1. Kitap Ekle");
+            System.out.println("2. Kitap Sil");
+            System.out.println("3. Kitap Ara");
+            System.out.println("4. Kitapları Listele");
+            System.out.println("5. Çıkış");
+            System.out.print("Seçiminizi yapın: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Clear the newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Kitap Başlığı: ");
+                    String title = scanner.nextLine();
+                    System.out.print("Kitap Yazarı: ");
+                    String author = scanner.nextLine();
+                    System.out.print("Kitap ISBN: ");
+                    String isbn = scanner.nextLine();
+                    library.addBook(new Book(title, author, isbn));
+                    System.out.println("Kitap eklendi.");
+                    break;
+
+                case 2:
+                    System.out.print("Silinecek Kitap ISBN'sini girin: ");
+                    String isbnToRemove = scanner.nextLine();
+                    library.removeBook(isbnToRemove);
+                    System.out.println("Kitap silindi.");
+                    break;
+
+                case 3:
+                    System.out.print("Aranacak Kitap Başlığı: ");
+                    String searchTitle = scanner.nextLine();
+                    Book foundBook = library.findBookByTitle(searchTitle);
+                    if (foundBook != null) {
+                        System.out.println("Kitap Bulundu: " + foundBook);
+                    } else {
+                        System.out.println("Kitap bulunamadı.");
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Kütüphanedeki Kitaplar:");
+                    library.listBooks();
+                    break;
+
+                case 5:
+                    running = false;
+                    System.out.println("Program sonlandırılıyor.");
+                    break;
+
+                default:
+                    System.out.println("Geçersiz seçim.");
+                    break;
+            }
+        }
+
+        scanner.close();
+    }
+}
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+// Kitap sınıfı
+class Book {
+    private String title;
+    private String author;
+    private String isbn;
+
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    @Override
+    public String toString() {
+        return "Başlık: " + title + ", Yazar: " + author + ", ISBN: " + isbn;
+    }
+}
+
+// Kütüphane sınıfı
+class Library {
+    private List<Book> books;
+
+    public Library() {
+        books = new ArrayList<>();
+    }
+
+    public void addBook(Book book) {
+        books.add(book);
+    }
+
+    public void removeBook(String isbn) {
+        books.removeIf(book -> book.getIsbn().equals(isbn));
+    }
+
+    public Book findBookByTitle(String title) {
+        for (Book book : books) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
+                return book;
+            }
+        }
+        return null;
+    }
+
+    public Book findBookByIsbn(String isbn) {
+        for (Book book : books) {
+            if (book.getIsbn().equals(isbn)) {
+                return book;
+            }
+        }
+        return null;
+    }
+
+    public void listBooks() {
+        if (books.isEmpty()) {
+            System.out.println("Kütüphanede hiç kitap yok.");
+            return;
+        }
+        for (Book book : books) {
+            System.out.println(book);
+        }
+    }
+}
+
+// Kütüphane yöneticisi sınıfı
+public class LibraryManager {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Library library = new Library();
+        boolean running = true;
+
+        while (running) {
+            System.out.println("\nKütüphane Yönetim Sistemi");
+            System.out.println("1. Kitap Ekle");
+            System.out.println("2. Kitap Sil");
+            System.out.println("3. Kitap Ara");
+            System.out.println("4. Kitapları Listele");
+            System.out.println("5. Çıkış");
+            System.out.print("Seçiminizi yapın: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Clear the newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Kitap Başlığı: ");
+                    String title = scanner.nextLine();
+                    System.out.print("Kitap Yazarı: ");
+                    String author = scanner.nextLine();
+                    System.out.print("Kitap ISBN: ");
+                    String isbn = scanner.nextLine();
+                    library.addBook(new Book(title, author, isbn));
+                    System.out.println("Kitap eklendi.");
+                    break;
+
+                case 2:
+                    System.out.print("Silinecek Kitap ISBN'sini girin: ");
+                    String isbnToRemove = scanner.nextLine();
+                    library.removeBook(isbnToRemove);
+                    System.out.println("Kitap silindi.");
+                    break;
+
+                case 3:
+                    System.out.print("Aranacak Kitap Başlığı: ");
+                    String searchTitle = scanner.nextLine();
+                    Book foundBook = library.findBookByTitle(searchTitle);
+                    if (foundBook != null) {
+                        System.out.println("Kitap Bulundu: " + foundBook);
+                    } else {
+                        System.out.println("Kitap bulunamadı.");
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Kütüphanedeki Kitaplar:");
+                    library.listBooks();
+                    break;
+
+                case 5:
+                    running = false;
+                    System.out.println("Program sonlandırılıyor.");
+                    break;
+
+                default:
+                    System.out.println("Geçersiz seçim.");
+                    break;
+            }
+        }
+
+        scanner.close();
     }
 }
