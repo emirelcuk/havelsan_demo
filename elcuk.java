@@ -26,14 +26,6 @@ public class SimpleCalculator {
         return a / b;
     }
 
-    public static void printMenu() {
-        System.out.println("Basit Hesap Makinesi");
-        System.out.println("1. Toplama");
-        System.out.println("2. Çıkarma");
-        System.out.println("3. Çarpma");
-
-        System.out.println("Bir işlem seçiniz: ");
-    }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
