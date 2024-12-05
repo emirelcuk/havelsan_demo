@@ -12,21 +12,6 @@ class Task:
 
 
 
-https://da58-84-51-5-150.ngrok-free.app
-
-    try:
-        due_date = datetime.datetime.strptime(due_date_str, "%Y-%m-%d").date()
-        manager.add_task(title, description, due_date, priority)
-    except ValueError:
-        return "Invalid date format. Please use YYYY-MM-DD."
-
-    return redirect(url_for('index'))
-
-# Route to mark a task as complete
-@app.route('/complete/<int:task_index>')
-def complete_task(task_index):
-    manager.complete_task(task_index)
-    return redirect(url_for('index'))
 
 # Route to delete a task
 @app.route('/delete/<int:task_index>')
