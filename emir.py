@@ -1,17 +1,4 @@
-# Importing necessary libraries
-import math
 
-# Define a class to represent a basic Calculator
-class Calculator:
-    def __init__(self):
-        # Initialize calculator with basic operations
-        self.result = 0
-
-    # Method to add two numbers
-    def add(self, x, y):
-        """Adds two numbers and returns the result."""
-        self.result = x + y
-        return self.result
 
     # Method to subtract two numbers
     def subtract(self, x, y):
