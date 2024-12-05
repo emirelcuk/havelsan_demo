@@ -25,23 +25,7 @@ class TaskManager:
         return 0 <= index < len(self.tasks)
 
 
-# Flask app setup
-app = Flask(__name__)
-manager = TaskManager()
-
-# Route for the homepage
-@app.route('/')
-def index():
-    tasks = manager.list_tasks()
-    return render_template('index.html', tasks=tasks)
-
-# Route to add a new task
-@app.route('/add', methods=['POST'])
-def add_task():
-    title = request.form.get('title')
-    description = request.form.get('description')
-    due_date_str = request.form.get('due_date')
-    priority = request.form.get('priority', 'Medium')
+https://da58-84-51-5-150.ngrok-free.app
 
     try:
         due_date = datetime.datetime.strptime(due_date_str, "%Y-%m-%d").date()
