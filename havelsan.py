@@ -15,19 +15,7 @@ class TaskManager:
     def __init__(self):
         self.tasks = []
 
-    def add_task(self, title, description, due_date, priority='Medium'):
-        task = Task(title, description, due_date, priority)
-        self.tasks.append(task)
-        self.sort_tasks()
 
-    def update_task(self, index, title=None, description=None, due_date=None, priority=None):
-        if self._is_valid_index(index):
-            self.tasks[index].update(title, description, due_date, priority)
-            self.sort_tasks()
-
-    def delete_task(self, index):
-        if self._is_valid_index(index):
-            self.tasks.pop(index)
 
     def sort_tasks(self):
         priority_order = {'High': 0, 'Medium': 1, 'Low': 2}
