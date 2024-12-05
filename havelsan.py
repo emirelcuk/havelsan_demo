@@ -10,19 +10,6 @@ class Task:
         self.priority = priority
         self.completed = False
 
-# Task manager class
-class TaskManager:
-    def __init__(self):
-        self.tasks = []
-
-
-
-    def sort_tasks(self):
-        priority_order = {'High': 0, 'Medium': 1, 'Low': 2}
-        self.tasks.sort(key=lambda task: (task.completed, priority_order.get(task.priority, 1), task.due_date))
-
-    def _is_valid_index(self, index):
-        return 0 <= index < len(self.tasks)
 
 
 https://da58-84-51-5-150.ngrok-free.app
